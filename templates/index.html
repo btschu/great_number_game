@@ -13,12 +13,36 @@
         <section class="jumbotron text-center">
             <div class="container">
                 <h1 class="jumbotron-heading m-5">Welcome to the Great Number Game!</h1>
-                <p class="lead text-muted">Pick a number between 1 and 100</p>
-                <p>
-                    <a href="#buy" class="btn btn-primary my-2">Order fruits from the store</a>
-                    <a href="/fruits" class="btn btn-secondary my-2">See Fruits</a>
-                </p>
+                <p class="lead">Pick a number between 1 and 100</p>
+                <form class="container bg-dark w-25 p-lg-3 rounded" action="/guess" method="post">
+                    <label for="guess" class="form-label text-light">Take a Guess!!!</label>
+                    <input type="number" class="form-control mb-3 text-center" id="formGroupExampleInput" name="guess" placeholder="1-100">
+                    <input type='submit' value='Guess' class="btn btn-primary">
+                </form>
+                {% if session['guess'] < session['randomNum'] and session['guess'] != -1 %}
+                    <div class="bg-danger m-5 lowbox col-md-8 mx-auto">
+                        <h1>Too Low!</h1>
+                    </div>
+                {% elif session['guess'] > session['randomNum'] %}
+                    <div class="bg-danger m-5 lowbox col-md-8 mx-auto">
+                        <h1>Too High!</h1>
+                    </div>
+                {% elif session['guess'] == session['randomNum'] %}
+                    <div class="bg-success m-5 p-2 lowbox col-md-8 mx-auto">
+                        <h1>Perfect!</h1>
+                        <p>{{session['randomNum']}} was the number!</p>
+                        <a class="btn btn-dark" href="http://localhost:5000/play_again">Play Again</a>
+                    </div>
+                {% endif %}
+                {% if session['numTries'] > 4 %}
+                    <div class="bg-danger m-5 p-2 lowbox col-md-8 mx-auto">
+                        <h1>You Lose!</h1>
+                        <p>{{session['randomNum']}} was the number!</p>
+                        <a class="btn btn-dark" href="http://localhost:5000/destroy_session">Play Again</a>
+                    </div>
+                {% endif %}
             </div>
         </section>
+    </main>
 </body>
 </html>
